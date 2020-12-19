@@ -2,7 +2,10 @@ Django quiz app
 ===============
 [![Build Status](https://travis-ci.org/tomwalker/django_quiz.svg?branch=master)](https://travis-ci.org/tomwalker/django_quiz)
 
-This is a configurable quiz app for Django.
+This is a configurable quiz app for Django, based on tomwalker's django quiz app.
+
+Revisions:
+* Updating Essay Class to allow entry of answer text and provide marks via fuzzywuzzy text matching library
 
 I use it to run a few medical revision websites. Here is an [example website](http://www.revisemrcp.com/)
 
