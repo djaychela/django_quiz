@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
 {% load i18n %}
+
+{% load quiz_tags %}
+
 {% block title %}{% trans "All Quizzes" %}{% endblock %}
 
 {% block content %}
-<h2>{% trans "List of quizzes" %}</h2>
+<h2>{% trans "List of Quiz Rounds Available:" %}</h2>
     {% if quiz_list %}
 		<table class="table table-bordered table-striped">
 
@@ -11,9 +14,10 @@
 			<tr>
 			  <th>{% trans "Title" %}</th>
 			  <th>{% trans "Category" %}</th>
-			  <th>{% trans "Exam" %}</th>
-			  <th>{% trans "Single attempt" %}</th>
-			  <th></th>
+			  
+			  
+			  <th>Score / Start</th>
+
 			</tr>
 		  </thead>
 
@@ -24,12 +28,15 @@
   			<tr>
 			  <td>{{ quiz.title }}</td>
 			  <td>{{ quiz.category }}</td>
-			  <td>{{ quiz.exam_paper }}</td>
-			  <td>{{ quiz.single_attempt }}</td>
-			  <td>
-				<a href="{% url 'quiz_start_page' slug=quiz.url %}">
-				  {% trans "View details" %}
-				</a>
+
+				{% if scores_dict|get_item:forloop.counter is None %}
+				  	<td>
+					<a href="{% url 'quiz_start_page' slug=quiz.url %}" class="btn btn-primary btn-sm">
+				  	Start {{ quiz.title }}</a>
+					</td>
+				{% else %}
+					<td>{{ scores_dict|get_item:forloop.counter }}</td>
+				{% endif %}
 			</tr>
 
         {% endfor %}
@@ -38,6 +45,9 @@
 		</table>
 
 	{% else %}
-        <p>{% trans "There are no available quizzes" %}.</p>
-    {% endif %}
+        <p>No rounds are available at the moment.</p>
+	{% endif %}
+	{% if not user.is_authenticated %}
+	<p>You should <a href="{% url 'account_signup' %}">sign up</a> or <a href="{% url 'account_login' %}">sign in!</a></p>
+	{% endif %}
 {% endblock %}

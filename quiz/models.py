@@ -159,6 +159,7 @@ class Quiz(models.Model):
         return self.title
 
     def get_questions(self):
+        # print(f"QS: {self.question_set.all().select_subclasses()}")
         return self.question_set.all().select_subclasses()
 
     @property
@@ -303,6 +304,8 @@ class Progress(models.Model):
         """
         return Sitting.objects.filter(user=self.user, complete=True)
 
+    def __str__(self):
+        return str(self.user)
 
 class SittingManager(models.Manager):
 
@@ -313,9 +316,11 @@ class SittingManager(models.Manager):
                                             .order_by('?')
         else:
             question_set = quiz.question_set.all() \
-                                            .select_subclasses()
+                                            .select_subclasses().order_by('content')
+
 
         question_set = [item.id for item in question_set]
+
 
         if len(question_set) == 0:
             raise ImproperlyConfigured('Question set of the quiz is empty. '
@@ -324,7 +329,10 @@ class SittingManager(models.Manager):
         if quiz.max_questions and quiz.max_questions < len(question_set):
             question_set = question_set[:quiz.max_questions]
 
+
         questions = ",".join(map(str, question_set)) + ","
+
+
 
         new_sitting = self.create(user=user,
                                   quiz=quiz,
@@ -418,6 +426,8 @@ class Sitting(models.Model):
         if not self.question_list:
             return False
 
+        # print(self.question_list)
+
         first, _ = self.question_list.split(',', 1)
         question_id = int(first)
         return Question.objects.get_subclass(id=question_id)
@@ -457,6 +467,12 @@ class Sitting(models.Model):
             return correct
         else:
             return 0
+    
+    @property
+    def get_incorrect_questions_list(self):
+        # print([int(num) for num in self.incorrect_questions.split(",") if num !=''])
+        """ returns id/pk of incorrect questions """
+        return [int(num) for num in self.incorrect_questions.split(",") if num !='']
 
     def mark_quiz_complete(self):
         self.complete = True
@@ -591,3 +607,16 @@ class Question(models.Model):
 
     def __str__(self):
         return self.content
+
+
+class Score(models.Model):
+    """
+    Score is used to track individual's progress in quizzes
+    """
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("User"), on_delete=models.CASCADE)
+
+    round = models.IntegerField()
+
+    question = models.IntegerField()
+
+    score = models.FloatField()

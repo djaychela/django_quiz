@@ -6,12 +6,17 @@ from django.utils.translation import ugettext_lazy as _
 from .models import Quiz, Category, SubCategory, Progress, Question
 from multichoice.models import MCQuestion, Answer
 from true_false.models import TF_Question
-from essay.models import Essay_Question
-
+from essay.models import Essay_Question, Essay_Answer
+from music.models import Music_Question, Music_Answer
 
 class AnswerInline(admin.TabularInline):
     model = Answer
 
+class EssayAnswerInline(admin.TabularInline):
+    model = Essay_Answer
+
+class MusicAnswerInline(admin.TabularInline):
+    model = Music_Answer
 
 class QuizAdminForm(forms.ModelForm):
     """
@@ -50,7 +55,7 @@ class QuizAdminForm(forms.ModelForm):
 class QuizAdmin(admin.ModelAdmin):
     form = QuizAdminForm
 
-    list_display = ('title', 'category', )
+    list_display = ('title', 'category', 'draft')
     list_filter = ('category',)
     search_fields = ('description', 'category', )
 
@@ -98,9 +103,20 @@ class TFQuestionAdmin(admin.ModelAdmin):
 class EssayQuestionAdmin(admin.ModelAdmin):
     list_display = ('content', 'category', )
     list_filter = ('category',)
-    fields = ('content', 'category', 'sub_category', 'quiz', 'explanation', )
+    fields = ('content', 'category', 'figure', 'sub_category', 'quiz', 'explanation', )
     search_fields = ('content', 'explanation')
     filter_horizontal = ('quiz',)
+
+    inlines = [EssayAnswerInline]
+
+class MusicQuestionAdmin(admin.ModelAdmin):
+    list_display = ('content', 'category', )
+    list_filter = ('category', )
+    fields = ('content','category', 'figure', 'sub_category', 'quiz', 'explanation')
+    search_fields = ('content', 'explanation')
+    filter_horizontal = ('quiz', )
+
+    inlines = [MusicAnswerInline]
 
 admin.site.register(Quiz, QuizAdmin)
 admin.site.register(Category, CategoryAdmin)
@@ -109,3 +125,4 @@ admin.site.register(MCQuestion, MCQuestionAdmin)
 admin.site.register(Progress, ProgressAdmin)
 admin.site.register(TF_Question, TFQuestionAdmin)
 admin.site.register(Essay_Question, EssayQuestionAdmin)
+admin.site.register(Music_Question, MusicQuestionAdmin)

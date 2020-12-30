@@ -1,6 +1,20 @@
-django>=1.8.19
-django-model-utils>=3.1.1
-Pillow>=4.0.0
-
-# Only needed for running tests.
-tox
+appdirs==1.4.4
+distlib==0.3.1
+Django==2.2
+django-model-utils==4.1.1
+filelock==3.0.12
+fuzzywuzzy==0.18.0
+importlib-metadata==2.1.1
+packaging==20.8
+Pillow==8.0.1
+pluggy==0.13.1
+py==1.10.0
+pyparsing==2.4.7
+python-Levenshtein==0.12.0
+pytz==2020.4
+six==1.15.0
+sqlparse==0.4.1
+toml==0.10.2
+tox==3.20.1
+virtualenv==20.2.2
+zipp==3.4.0

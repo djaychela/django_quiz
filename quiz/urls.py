@@ -3,9 +3,18 @@ try:
 except ImportError:
     from django.urls import re_path as url
 
-from .views import QuizListView, CategoriesListView, \
-    ViewQuizListByCategory, QuizUserProgressView, QuizMarkingList, \
-    QuizMarkingDetail, QuizDetailView, QuizTake
+from .views import (
+    QuizListView,
+    CategoriesListView,
+    ViewQuizListByCategory,
+    QuizMarkingList,
+    QuizMarkingDetail,
+    QuizDetailView,
+    QuizTake,
+    QuizUserFinalProgressView,
+    LeaderboardNew,
+    ProgressViewNew,
+)
 
 urlpatterns = [
 
@@ -22,8 +31,17 @@ urlpatterns = [
         name='quiz_category_list_matching'),
 
     url(r'^progress/$',
-        view=QuizUserProgressView.as_view(),
+        view=ProgressViewNew.as_view(),
         name='quiz_progress'),
+
+    url(r'^final/$',
+        view=QuizUserFinalProgressView.as_view(),
+        name='quiz_final_progress'),
+
+    url(r'^leaderboard/$',
+        view=LeaderboardNew.as_view(),
+        name='quiz_leaderboard'),
+    
 
     url(r'^marking/$',
         view=QuizMarkingList.as_view(),

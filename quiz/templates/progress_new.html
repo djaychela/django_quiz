@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% load quiz_tags %}
+
+{% block title %} {% trans "Progress Page" %} {% endblock %}
+{% block description %} {% trans "User Progress Page" %} {% endblock %}
+
+{% block content %}
+
+
+  <hr>
+
+  <h1>Progress</h1>
+  <p class="lead">
+	Here's your current progress...only you can see this!
+  </p>
+
+  <table class="table table-bordered table-striped">
+
+	<thead>
+	  <tr>
+		
+		{% for round in round_list %}
+			<th>{{ round }}</th>
+		{% endfor %}
+		<th>Total</th>
+	  </tr>
+	</thead>
+
+	<tbody>
+
+	  {% for user in user_stats_list %}
+
+	  <tr>
+		
+		{% for round in round_names %}
+			<td>{{ user|get_item:round|floatformat }}</td>
+		{% endfor %}
+		<td>{{ user.total|floatformat }}</td>
+	  </tr>
+
+	  {% endfor %}
+
+	</tbody>
+
+  </table>
+
+{% endblock %}

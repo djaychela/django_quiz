@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% load quiz_tags %}
+
+{% block title %} {% trans "Progress Page" %} {% endblock %}
+{% block description %} {% trans "User Progress Page" %} {% endblock %}
+
+{% block content %}
+
+
+<hr>
+
+<h1>Leaderboard</h1>
+<p class="lead">
+    Here's the current state of play...
+</p>
+
+<table class="table table-bordered table-striped">
+
+    <thead>
+        <tr>
+            <th>{% trans "Username" %}</th>
+            {% for round in round_list %}
+            <th>{{ round }}</th>
+            {% endfor %}
+            <th>Total</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        {% for user in user_stats_list %}
+
+        <tr>
+            <td>{{ user.name }}</td>
+            {% for round in round_names %}
+            {% if user|get_item:round == max_scores|get_item:round and max_scores|get_item:round != 0 %}
+            <td class="bg-success">{{ user|get_item:round|floatformat }}</td>
+            {% else %}
+            <td>{{ user|get_item:round|floatformat }}</td>
+            {% endif %}
+            {% endfor %}
+            <td>{{ user.total|floatformat }}</td>
+        </tr>
+
+        {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% endblock %}

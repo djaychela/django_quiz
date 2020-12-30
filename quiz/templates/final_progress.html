@@ -8,14 +8,48 @@
 
 {% block content %}
 
+  {% if cat_scores %}
+
+  <h1>{% trans "Question Category Scores" %}</h1>
+
+  <table class="table table-bordered table-striped">
+
+	<thead>
+	  <tr>
+		<th>{% trans "Category" %}</th>
+		<th>{% trans "Correctly answererd" %}</th>
+		<th>{% trans "Incorrect" %}</th>
+		<th>%</th>
+	  </tr>
+	</thead>
+
+	<tbody>
+
+
+	  {% for cat, value in cat_scores.items %}
+	  <tr>
+		<td>{{ cat }}</td>
+		<td>{{ value.0 }}</td>
+		<td>{{ value.1 }}</td>
+		<td>{{ value.2 }}</td>
+	  </tr>
+
+	  {% endfor %}
+
+	</tbody>
+
+  </table>
+
+
+  {% endif %}
 
   {% if exams %}
 
   <hr>
 
-  <h1>{% trans "Previous exam papers" %}</h1>
+  <h1>{% trans "Quiz Round Scores" %}</h1>
   <p class="lead">
-	{% trans "Below are the results of exams that you have sat." %}
+	{% trans "The scores below are for each round in the quiz." %}
   </p>
 
   <table class="table table-bordered table-striped">
@@ -46,8 +80,6 @@
 
   </table>
 
-  {% else %}
-  <h2>Once you've completed some rounds, your stats will appear here...</h2>
   {% endif %}
 
 
