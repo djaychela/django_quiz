@@ -17,6 +17,5 @@ build*
 /uploads/
 .tox
 *.egg
-/xmas_quiz/
 .DS_Store
 .vscode/
